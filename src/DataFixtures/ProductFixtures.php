@@ -51,6 +51,7 @@ class ProductFixtures extends Fixture
         if (self::NUMBER_OF_PRODUCT < 1) {
             throw new \Exception("NUMBER_OF_PRODUCT must be a positive integer");
         }
+
         foreach ($this->batteryCapacities as $batteryCapacity) {
             $battery = new Battery();
             $battery->setCapacity($batteryCapacity);
@@ -140,7 +141,7 @@ class ProductFixtures extends Fixture
                 ->setScreenTechnology(($faker->randomElement($manager->getRepository(ScreenTechnology::class)->findAll())))
                 ->setSimSize(($faker->randomElement($manager->getRepository(SimSize::class)->findAll())))
                 ->setStorage(($faker->randomElement($manager->getRepository(Storage::class)->findAll())))
-                ->setName($product->getOs()->getName() . " " . $product->getStorage()->getCapacity() . " Gb memory " . $product->getRam() . "Gb RAM");
+                ->setName($product->getOs()->getName() . " " . $product->getStorage()->getCapacity() . " Gb memory " . $product->getRam() . " Gb RAM");
 
             $wirelessTechnologyCount = mt_rand(1, count($manager->getRepository(WirelessTechnology::class)->findAll()));
 
