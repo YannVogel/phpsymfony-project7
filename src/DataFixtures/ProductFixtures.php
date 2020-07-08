@@ -49,7 +49,7 @@ class ProductFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if (self::NUMBER_OF_PRODUCT < 1) {
-            throw new \Exception("NUMBER_OF_PRODUCT must be a positive integer");
+            throw new \Exception("NUMBER_OF_PRODUCT must be a positive integer.");
         }
 
         foreach ($this->batteryCapacities as $batteryCapacity) {
