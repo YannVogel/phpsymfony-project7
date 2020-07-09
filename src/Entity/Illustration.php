@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\IllustrationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=IllustrationRepository::class)
@@ -19,6 +20,7 @@ class Illustration
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("list")
      */
     private string $url;
 

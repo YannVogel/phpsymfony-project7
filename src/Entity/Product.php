@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -21,128 +22,152 @@ class Product
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups("list")
      */
     private int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Battery::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?Battery $battery;
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?Brand $brand;
 
     /**
      * @ORM\ManyToOne(targetEntity=Os::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?Os $os;
 
     /**
      * @ORM\ManyToOne(targetEntity=ScreenResolution::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?ScreenResolution $screenResolution;
 
     /**
      * @ORM\ManyToOne(targetEntity=ScreenTechnology::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?ScreenTechnology $screenTechnology;
 
     /**
      * @ORM\ManyToOne(targetEntity=SimSize::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?SimSize $simSize;
 
     /**
      * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups("list")
      */
     private ?Storage $storage;
 
     /**
      * @ORM\ManyToMany(targetEntity=WirelessTechnology::class, inversedBy="products")
+     * @Groups("list")
      */
     private Collection $wirelessTechnology;
 
     /**
      * @ORM\OneToMany(targetEntity=Illustration::class, mappedBy="product", orphanRemoval=true)
+     * @Groups("list")
      */
     private Collection $illustrations;
 
     /**
      * @ORM\ManyToMany(targetEntity=Color::class, mappedBy="product")
+     * @Groups("list")
      */
     private Collection $colors;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("list")
      */
     private string $name;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("list")
      */
     private float $price;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $dualSim;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $microSd;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("list")
      */
     private float $screenSize;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("list")
      */
     private float $cameraResolution;
 
     /**
      * @ORM\Column(type="float")
+     * @Groups("list")
      */
     private float $weight;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $usbTypeC;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("list")
      */
     private int $yearsOfWarranty;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $jackPlug;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $frontCamera;
 
     /**
      * @ORM\Column(type="boolean")
+     * @Groups("list")
      */
     private bool $backCamera;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups("list")
      */
     private int $ram;
 
