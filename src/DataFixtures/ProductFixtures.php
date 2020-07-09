@@ -20,7 +20,7 @@ use Faker\Factory;
 
 class ProductFixtures extends Fixture
 {
-    private const NUMBER_OF_PRODUCT = 10;
+    private const NUMBER_OF_PRODUCT = 100;
     private DataProvider $dataProvider;
     private array $batteryCapacities;
     private array $wirelessTechnologyNames;
