@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=ProductRepository::class)
@@ -21,130 +22,154 @@ class Product
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"list"})
      */
     private int $id;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Groups({"detail", "list"})
+     */
+    private string $name;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"detail", "list"})
+     */
+    private float $price;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $dualSim;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $microSd;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"detail", "list"})
+     */
+    private float $screenSize;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"detail", "list"})
+     */
+    private float $cameraResolution;
+
+    /**
+     * @ORM\Column(type="float")
+     * @Groups({"detail", "list"})
+     */
+    private float $weight;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $usbTypeC;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"detail", "list"})
+     */
+    private int $yearsOfWarranty;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $jackPlug;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $frontCamera;
+
+    /**
+     * @ORM\Column(type="boolean")
+     * @Groups({"detail", "list"})
+     */
+    private bool $backCamera;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Groups({"detail", "list"})
+     */
+    private int $ram;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Battery::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?Battery $battery;
 
     /**
      * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?Brand $brand;
 
     /**
      * @ORM\ManyToOne(targetEntity=Os::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?Os $os;
 
     /**
      * @ORM\ManyToOne(targetEntity=ScreenResolution::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?ScreenResolution $screenResolution;
 
     /**
      * @ORM\ManyToOne(targetEntity=ScreenTechnology::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?ScreenTechnology $screenTechnology;
 
     /**
      * @ORM\ManyToOne(targetEntity=SimSize::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail"})
      */
     private ?SimSize $simSize;
 
     /**
      * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"list", "detail"})
      */
     private ?Storage $storage;
 
     /**
      * @ORM\ManyToMany(targetEntity=WirelessTechnology::class, inversedBy="products")
+     * @Groups({"detail"})
      */
     private Collection $wirelessTechnology;
 
     /**
      * @ORM\OneToMany(targetEntity=Illustration::class, mappedBy="product", orphanRemoval=true)
+     * @Groups({"list", "detail"})
      */
     private Collection $illustrations;
 
     /**
      * @ORM\ManyToMany(targetEntity=Color::class, mappedBy="product")
+     * @Groups({"detail"})
      */
     private Collection $colors;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private string $name;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private float $price;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $dualSim;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $microSd;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private float $screenSize;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private float $cameraResolution;
-
-    /**
-     * @ORM\Column(type="float")
-     */
-    private float $weight;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $usbTypeC;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private int $yearsOfWarranty;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $jackPlug;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $frontCamera;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private bool $backCamera;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private int $ram;
 
     public function __construct()
     {
