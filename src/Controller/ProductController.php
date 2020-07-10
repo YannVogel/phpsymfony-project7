@@ -7,6 +7,7 @@ use App\Repository\ProductRepository;
 use App\Service\PaginationService;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +18,20 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductController extends AbstractController
 {
+    /**
+     * @Route("/{id}", name="product_detail", methods={"GET"})
+     * @param Product $product
+     * @param ProductRepository $repository
+     * @return JsonResponse
+     */
+    public function readProduct(Product $product, ProductRepository $repository)
+    {
+        return $this->json(
+            $product,
+            200, [],
+            ['groups' => 'detail']);
+    }
+
     /**
      * @Route("/{page<\d+>?1}", name="products_list", methods={"GET"})
      * @param Request $request
