@@ -141,7 +141,7 @@ class ProductFixtures extends Fixture
                 ->setScreenTechnology(($faker->randomElement($manager->getRepository(ScreenTechnology::class)->findAll())))
                 ->setSimSize(($faker->randomElement($manager->getRepository(SimSize::class)->findAll())))
                 ->setStorage(($faker->randomElement($manager->getRepository(Storage::class)->findAll())))
-                ->setName($product->getOs()->getName() . " " . $product->getStorage()->getCapacity() . " Gb memory " . $product->getRam() . " Gb RAM");
+                ->setName($product->getBrand()->getName() . " " . $product->getOs()->getName() . " " . $product->getStorage()->getCapacity() . " Gb memory " . $product->getRam() . " Gb RAM");
 
             $wirelessTechnologyCount = mt_rand(1, count($manager->getRepository(WirelessTechnology::class)->findAll()));
 
