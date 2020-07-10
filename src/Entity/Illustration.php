@@ -20,7 +20,7 @@ class Illustration
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups({"detail", "list"})
+     * @Groups({"detail, "list"})
      */
     private string $url;
 

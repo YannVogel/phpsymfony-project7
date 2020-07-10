@@ -149,7 +149,6 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
-     * @Groups({"list", "detail"})
      */
     private ?Storage $storage;
 
