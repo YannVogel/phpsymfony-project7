@@ -27,7 +27,7 @@ class Storage
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("list")
+     * @Groups({"detail", "list"})
      */
     private int $capacity;
 

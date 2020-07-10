@@ -27,7 +27,7 @@ class Battery
 
     /**
      * @ORM\Column(type="integer")
-     * @Groups("list")
+     * @Groups({"detail"})
      */
     private int $capacity;
 

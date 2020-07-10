@@ -27,7 +27,7 @@ class ScreenTechnology
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Groups("list")
+     * @Groups({"detail"})
      */
     private string $name;
 
