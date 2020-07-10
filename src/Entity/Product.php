@@ -149,6 +149,7 @@ class Product
     /**
      * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"detail", "list"})
      */
     private ?Storage $storage;
 
@@ -160,7 +161,7 @@ class Product
 
     /**
      * @ORM\OneToMany(targetEntity=Illustration::class, mappedBy="product", orphanRemoval=true)
-     * @Groups({"list", "detail"})
+     * @Groups({"detail", "list"})
      */
     private Collection $illustrations;
 
