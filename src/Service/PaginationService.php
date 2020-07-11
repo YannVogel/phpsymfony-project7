@@ -14,7 +14,7 @@ class PaginationService
         return $repository->findBy($criteria, [], $limit, ($page - 1) * $limit);
     }
 
-    public function getPages(EntityRepository $repository, int $limit, ?array $criteria = [])
+    public function getPages(EntityRepository $repository, int $limit, array $criteria = [])
     {
         return ceil(count($repository->findBy($criteria)) / $limit);
     }
