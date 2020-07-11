@@ -29,7 +29,7 @@ class ClientController extends AbstractController
     {
         $limit = 5;
         $page = $request->query->get('page');
-        $maxPage = $paginationService->getPages($repository, $limit, "client", $client);
+        $maxPage = $paginationService->getPages($repository, $limit, ["client" => $client]);
 
         if (is_null($page) || $page < 1) {
             $page = 1;
@@ -38,7 +38,7 @@ class ClientController extends AbstractController
         }
 
         return $this->json(
-            $paginationService->paginateResults($repository, $page, $limit, "client", $client),
+            $paginationService->paginateResults($repository, $page, $limit, ["client" => $client]),
             200, [],
             ['groups' => 'list']);
     }
