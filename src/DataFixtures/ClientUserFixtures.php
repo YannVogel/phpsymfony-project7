@@ -12,9 +12,9 @@ use Faker\Factory;
 class ClientUserFixtures extends Fixture
 {
     private DataProvider $dataProvider;
-    private const NUMBER_OF_CLIENT = 5;
-    private const MIN_USER_BY_CLIENT = 3;
-    private const MAX_USER_BY_CLIENT = 20;
+    private const NUMBER_OF_CLIENT = 3;
+    private const MIN_USER_BY_CLIENT = 20;
+    private const MAX_USER_BY_CLIENT = 50;
 
     public function __construct(DataProvider $dataProvider)
     {
