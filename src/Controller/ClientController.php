@@ -29,9 +29,9 @@ class ClientController extends AbstractController
      */
     public function readUser(Client $client, User $user, UserRepository $repository)
     {
-        $data = $repository->findBy(["client" => $client, "id" => $user->getId()]);
+        $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
-        if (empty($data)) {
+        if (is_null($data)) {
             return $this->json(
                 [
                 'status' => 403,
