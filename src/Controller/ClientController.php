@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\PaginationService;
+use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -35,7 +36,7 @@ class ClientController extends AbstractController
             return $this->json(
                 [
                 'status' => 403,
-                'message' => 'Unauthorized to access this ressource.'
+                'message' => 'Unauthorized to access this resource.'
                 ],
                 403
             );
@@ -71,5 +72,40 @@ class ClientController extends AbstractController
             $paginationService->paginateResults($repository, $page, $limit, ["client" => $client]),
             200, [],
             ['groups' => 'list']);
+    }
+
+    /**
+     * @Route("/{id}/users/{user_id}", name="client_user_delete", methods={"DELETE"})
+     * @Entity("user", expr="repository.find(user_id)")
+     * @param Client $client
+     * @param User $user
+     * @param UserRepository $repository
+     * @param EntityManagerInterface $manager
+     * @return JsonResponse
+     */
+    public function deleteUser(Client $client, User $user, UserRepository $repository, EntityManagerInterface $manager)
+    {
+        $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
+
+        if (is_null($data)) {
+            return $this->json(
+                [
+                    'status' => 403,
+                    'message' => 'Unauthorized to access this resource.'
+                ],
+                403
+            );
+        }
+
+        $manager->remove($data);
+        $manager->flush();
+
+        return $this->json(
+            [
+                'status' => 200,
+                'message' => 'Resource deleted successfully'
+            ],
+            200
+        );
     }
 }
