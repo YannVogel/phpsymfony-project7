@@ -32,7 +32,7 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
      * @Assert\NotBlank(message="First name should not be blank.")
-     * @Assert\Regex("/^[a-zA-Z -éèàç]$/", message="First name should not contain special nor digit character.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç]+$/", message="First name should not contain special nor digit character.")
      */
     private string $firstName;
 
@@ -40,7 +40,7 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
      * @Assert\NotBlank(message="Last name should not be blank.")
-     * @Assert\Regex("/^[a-zA-Z -éèàç]$/", message="Last name should not contain special nor digit character.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç]+$/", message="Last name should not contain special nor digit character.")
      */
     private string $lastName;
 
@@ -56,7 +56,7 @@ class User
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail"})
      * @Assert\NotBlank(message="City should not be blank.")
-     * @Assert\Regex("/^[a-zA-Z -éèàç']$/", message="City should not contain special nor digit character.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç']+$/", message="City should not contain special nor digit character.")
      */
     private string $city;
 
