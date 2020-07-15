@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -22,30 +23,40 @@ class User
     /**
      * @ORM\Column(type="string", length=1)
      * @Groups({"detail", "list"})
+     * @Assert\NotBlank(message="Civility should not be blank.")
+     * @Assert\Regex("/^m|f$/", message="Civility must be 'm' or 'f'.")
      */
     private string $civility;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
+     * @Assert\NotBlank(message="First name should not be blank.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç]$/", message="First name should not contain special nor digit character.")
      */
     private string $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
+     * @Assert\NotBlank(message="Last name should not be blank.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç]$/", message="Last name should not contain special nor digit character.")
      */
     private string $lastName;
 
     /**
      * @ORM\Column(type="integer")
      * @Groups({"detail"})
+     * @Assert\NotBlank(message="Age should not be blank.")
+     * @Assert\Regex("/\d/", message="Age must be an integer.")
      */
     private int $age;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail"})
+     * @Assert\NotBlank(message="City should not be blank.")
+     * @Assert\Regex("/^[a-zA-Z -éèàç']$/", message="City should not contain special nor digit character.")
      */
     private string $city;
 
