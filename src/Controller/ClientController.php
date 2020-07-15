@@ -14,12 +14,53 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/clients")
  */
 class ClientController extends AbstractController
 {
+    /**
+     * @Route("/{id}/users", name="client_user_create", methods={"POST"})
+     * @param Client $client
+     * @param SerializerInterface $serializer
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @param ValidatorInterface $validator
+     * @return JsonResponse
+     */
+    public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator)
+    {
+        /* @var User $user */
+        $user = $serializer->deserialize($request->getContent(), User::class, 'json');
+
+        $errors = $validator->validate($user);
+
+        if (count($errors)) {
+            return $this->json(
+                [
+                    'status' => 400,
+                    'message' => 'Bad request.',
+                    'detail' => $errors
+                ]
+            );
+        }
+
+        $user->setClient($client);
+        $manager->persist($user);
+        $manager->flush();
+
+        return $this->json(
+            [
+                'status' => 201,
+                'message' => 'Resource created successfully',
+                'uri' => '/clients/' . $client->getId() . '/users/' . $user->getId()
+            ]
+        );
+    }
+
     /**
      * @Route("/{id}/users/{user_id}", name="client_user_detail", methods={"GET"})
      * @Entity("user", expr="repository.find(user_id)")
