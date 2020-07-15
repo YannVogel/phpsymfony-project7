@@ -42,9 +42,9 @@ class ClientController extends AbstractController
             return $this->json(
                 [
                     'status' => 400,
-                    'message' => 'Bad request.',
-                    'detail' => $errors
-                ]
+                    'message' => 'Bad request. There is errors on given fields.'
+                ],
+                400
             );
         }
 
@@ -57,7 +57,8 @@ class ClientController extends AbstractController
                 'status' => 201,
                 'message' => 'Resource created successfully',
                 'uri' => '/clients/' . $client->getId() . '/users/' . $user->getId()
-            ]
+            ],
+            201
         );
     }
 
@@ -76,10 +77,10 @@ class ClientController extends AbstractController
         if (is_null($data)) {
             return $this->json(
                 [
-                'status' => 403,
-                'message' => 'Unauthorized to access this resource.'
+                'status' => 404,
+                'message' => 'Resource not found.'
                 ],
-                403
+                404
             );
         }
 
@@ -131,10 +132,10 @@ class ClientController extends AbstractController
         if (is_null($data)) {
             return $this->json(
                 [
-                    'status' => 403,
-                    'message' => 'Unauthorized to access this resource.'
+                    'status' => 404,
+                    'message' => 'Resource not found.'
                 ],
-                403
+                404
             );
         }
 
