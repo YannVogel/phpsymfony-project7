@@ -84,8 +84,12 @@ class User
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"detail"})
+     * @Assert\Email(
+     *     message="Please provide a proper mail."
+     * )
      */
-    private $mail;
+    private string $mail;
 
     public function getId(): ?int
     {

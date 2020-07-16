@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass=ClientRepository::class)
@@ -19,7 +20,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *     message="A client with this mail already exists."
  * )
  */
-class Client
+class Client implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -141,4 +142,18 @@ class Client
 
         return $this;
     }
+
+    public function getRoles()
+    {
+        return ['ROLE_USER'];
+    }
+
+    public function getSalt(){}
+
+    public function getUsername()
+    {
+        return $this->mail;
+    }
+
+    public function eraseCredentials(){}
 }
