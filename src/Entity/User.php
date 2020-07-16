@@ -4,11 +4,16 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *     "mail",
+ *     message="A client with this mail already exists."
+ * )
  */
 class User
 {
@@ -76,6 +81,11 @@ class User
      * @ORM\JoinColumn(nullable=false)
      */
     private ?Client $client;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $mail;
 
     public function getId(): ?int
     {
@@ -150,6 +160,18 @@ class User
     public function setClient(?Client $client): self
     {
         $this->client = $client;
+
+        return $this;
+    }
+
+    public function getMail(): ?string
+    {
+        return $this->mail;
+    }
+
+    public function setMail(string $mail): self
+    {
+        $this->mail = $mail;
 
         return $this;
     }
