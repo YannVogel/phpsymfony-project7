@@ -1,9 +1,9 @@
 <img src="https://i.ibb.co/r2sV4QT/FR-France-Flag-icon.png" alt="FR-France-Flag-icon"/>
 
-#Créer un web service exposant une API - Un projet OpenClassrooms par Yann Vogel
+# Créer un web service exposant une API - Un projet OpenClassrooms par Yann Vogel
 
 
-##Instructions d'installation :
+## Instructions d'installation :
 
 - Créer le dossier qui accueillera le projet.
 
@@ -44,10 +44,10 @@ L'application est accessible à l'adresse https://127.0.0.1:8000/
 
 <img src="https://i.ibb.co/z5XtvLj/English-Language-Flag-1-icon.png" alt="English-Language-Flag-1-icon"/>
 
-#Build a web service using an API - An OpenClassrooms project by Yann Vogel
+# Build a web service using an API - An OpenClassrooms project by Yann Vogel
 
 
-##Installation instructions :
+## Installation instructions :
 
 - Create the folder that will host the project.
 
