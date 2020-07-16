@@ -23,7 +23,10 @@ class User
     /**
      * @ORM\Column(type="string", length=1)
      * @Groups({"detail", "list"})
-     * @Assert\NotBlank(message="Civility should not be blank.")
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="Civility should not be blank."
+     * )
      * @Assert\Regex("/^m|f$/", message="Civility must be 'm' or 'f'.")
      */
     private string $civility;
@@ -31,7 +34,9 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
-     * @Assert\NotBlank(message="First name should not be blank.")
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="First name should not be blank.")
      * @Assert\Regex("/^[a-zA-Z -éèàç]+$/", message="First name should not contain special nor digit character.")
      */
     private string $firstName;
@@ -39,7 +44,9 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail", "list"})
-     * @Assert\NotBlank(message="Last name should not be blank.")
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="Last name should not be blank.")
      * @Assert\Regex("/^[a-zA-Z -éèàç]+$/", message="Last name should not contain special nor digit character.")
      */
     private string $lastName;
@@ -47,7 +54,9 @@ class User
     /**
      * @ORM\Column(type="integer")
      * @Groups({"detail"})
-     * @Assert\NotBlank(message="Age should not be blank.")
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="Age should not be blank.")
      * @Assert\Regex("/\d/", message="Age must be an integer.")
      */
     private int $age;
@@ -55,7 +64,9 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail"})
-     * @Assert\NotBlank(message="City should not be blank.")
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="City should not be blank.")
      * @Assert\Regex("/^[a-zA-Z -éèàç']+$/", message="City should not contain special nor digit character.")
      */
     private string $city;
