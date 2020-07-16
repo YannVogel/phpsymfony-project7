@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=StorageRepository::class)
  * @UniqueEntity(
  *     "capacity",
- *     message="Une capacité similaire existe déjà en base de données !"
+ *     message="A storage with this capacity already exists."
  * )
  */
 class Storage

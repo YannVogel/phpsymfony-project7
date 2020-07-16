@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=BrandRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Une marque de ce nom existe déjà !"
+ *     message="A brand with this name already exists."
  * )
  */
 class Brand

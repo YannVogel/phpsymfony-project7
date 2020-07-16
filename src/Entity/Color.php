@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=ColorRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Une couleur de ce nom existe déjà !"
+ *     message="A color with this name already exists."
  * )
  */
 class Color

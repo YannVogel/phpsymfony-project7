@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=ScreenResolutionRepository::class)
  * @UniqueEntity(
  *     "resolution",
- *     message="Une résolution similaire est déjà présente en base de données !"
+ *     message="A similar resolution already exists."
  * )
  */
 class ScreenResolution

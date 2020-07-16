@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=OsRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Un OS portant ce nom existe déjà !"
+ *     message="An os with this name already exists."
  * )
  */
 class Os

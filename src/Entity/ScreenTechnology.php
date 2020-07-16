@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=ScreenTechnologyRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Il existe déjà une technologie d'écran portant ce nom !"
+ *     message="A screen technology with this name already exists."
  * )
  */
 class ScreenTechnology

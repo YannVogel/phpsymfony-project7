@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=BatteryRepository::class)
  * @UniqueEntity(
  *     "capacity",
- *     message="Une batterie de cette capacité existe déjà !"
+ *     message="A battery with this capacity already exists."
  * )
  */
 class Battery

@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=WirelessTechnologyRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Une technologie sans fil portant ce nom existe déjà en base de données !"
+ *     message="A wireless technology with this name already exists."
  * )
  */
 class WirelessTechnology
