@@ -24,15 +24,15 @@ class ClientUserFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         if(self::NUMBER_OF_CLIENT <= 0) {
-            throw new \Exception('NUMBER_OF_CLIENT must be a positive integer.');
+            throw new \LogicException('NUMBER_OF_CLIENT must be a positive integer.');
         }
 
         if(self::MIN_USER_BY_CLIENT <= 0 || self::MAX_USER_BY_CLIENT <= 0) {
-            throw new \Exception('MIN_USER_BY_CLIENT and MAX_USER_BY_CLIENT must be positive integers.');
+            throw new \LogicException('MIN_USER_BY_CLIENT and MAX_USER_BY_CLIENT must be positive integers.');
         }
 
         if (self::MIN_USER_BY_CLIENT > self::MAX_USER_BY_CLIENT) {
-            throw new \Exception('MIN_USER_BY_CLIENT must be equal or lower than MAX_USER_BY_CLIENT.');
+            throw new \LogicException('MIN_USER_BY_CLIENT must be equal or lower than MAX_USER_BY_CLIENT.');
         }
         $faker = Factory::create('fr-FR');
 
@@ -47,11 +47,12 @@ class ClientUserFixtures extends Fixture
             for ($j = 1; $j <= mt_rand(self::MIN_USER_BY_CLIENT, self::MAX_USER_BY_CLIENT); $j++) {
                 $user = new User();
 
-                $user->setCivility($this->getRandomCivility())
+                $user->setCivility($this->dataProvider->getRandomCivility())
                     ->setLastName($faker->lastName)
                     ->setFirstName($faker->firstName($user->getCivility() === 'm' ? 'male' : 'female'))
                     ->setAge(mt_rand(18,99))
                     ->setCity($faker->randomElement($this->dataProvider->getArrayOfCities()))
+                    ->setMail(strtolower($user->getFirstName() . '.' . $user->getLastName() . '@' . $faker->randomElement($this->dataProvider->getArrayOfMailSuffixes())))
                     ->setClient($client);
 
                 $manager->persist($user);
@@ -61,10 +62,5 @@ class ClientUserFixtures extends Fixture
         }
 
         $manager->flush();
-    }
-
-    public function getRandomCivility() : string
-    {
-        return mt_rand(0,1) ? 'm' : 'f';
     }
 }
