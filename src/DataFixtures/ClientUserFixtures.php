@@ -40,7 +40,7 @@ class ClientUserFixtures extends Fixture
             $client = new Client();
 
             $client->setName('Client' . $i)
-                ->setPassword(password_hash('motdepasse', PASSWORD_BCRYPT))
+                ->setPassword(password_hash('password', PASSWORD_BCRYPT))
                 ->setMail(strtolower($client->getName() . '@bilemo.com'))
                 ->setLogo('https://randomuser.me/api/portraits/lego/' . mt_rand(0,8) . '.jpg');
 
