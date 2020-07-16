@@ -15,6 +15,7 @@
         "symfony/maker-bundle": "^1.19",
         "symfony/orm-pack": "^1.0",
         "symfony/profiler-pack": "^1.0",
+        "symfony/security-bundle": "5.1.*",
         "symfony/serializer-pack": "^1.0",
         "symfony/validator": "5.1.*",
         "symfony/yaml": "5.1.*"
