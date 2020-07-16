@@ -12,11 +12,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ORM\Entity(repositoryClass=ClientRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Un client portant ce nom existe déjà !"
+ *     message="A client with this name already exists."
  * )
  * @UniqueEntity(
  *     "mail",
- *     message="Cette adresse mail est déjà associée à un client existant !"
+ *     message="A client with this mail already exists."
  * )
  */
 class Client

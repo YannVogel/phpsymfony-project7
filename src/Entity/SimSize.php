@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\Entity(repositoryClass=SimSizeRepository::class)
  * @UniqueEntity(
  *     "name",
- *     message="Il existe déjà une taille de carte Sim portant ce nom !"
+ *     message="A sim size with this name already exists."
  * )
  */
 class SimSize
