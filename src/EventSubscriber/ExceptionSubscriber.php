@@ -31,6 +31,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
                 'status' => $exception->getStatusCode(),
                 'message' => 'Full authentication is required to access this resource.'
             ];
+        } else {
+            $data = [
+                'status' => 400,
+                'message' => 'Bad request.'
+            ];
         }
 
         $response = new JsonResponse($data);
