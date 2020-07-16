@@ -42,7 +42,7 @@ class ClientController extends AbstractController
             return $this->json(
                 [
                     'status' => 400,
-                    'message' => 'Bad request. There is errors on given fields.'
+                    'message' => 'Bad request. There are errors on given fields.'
                 ],
                 400
             );
