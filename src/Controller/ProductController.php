@@ -6,6 +6,7 @@ use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\PaginationService;
 use Doctrine\Persistence\ObjectManager;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,6 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * @Route("/products")
+ * @IsGranted("ROLE_USER")
  */
 class ProductController extends AbstractController
 {
