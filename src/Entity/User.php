@@ -85,6 +85,9 @@ class User
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"detail"})
+     * @Assert\NotBlank(
+     *     normalizer="trim",
+     *     message="Mail should not be blank.")
      * @Assert\Email(
      *     message="Please provide a proper mail."
      * )
