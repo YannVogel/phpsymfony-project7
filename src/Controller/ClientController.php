@@ -7,8 +7,10 @@ use App\Entity\User;
 use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\PaginationService;
+use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -19,9 +21,17 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * @Route("/clients")
+ * @IsGranted("ROLE_USER")
  */
 class ClientController extends AbstractController
 {
+    private SecurityService $securityService;
+
+    public function __construct(SecurityService $securityService)
+    {
+        $this->securityService = $securityService;
+    }
+
     /**
      * @Route("/{id}/users", name="client_user_create", methods={"POST"})
      * @param Client $client
@@ -33,6 +43,15 @@ class ClientController extends AbstractController
      */
     public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator)
     {
+        $this->securityService
+            ->setClientId($this->getUser()->getId())
+            ->setPathId($client->getId());
+
+        if (!$this->securityService->areClientIdsMatching())
+        {
+            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+        }
+
         /* @var User $user */
         $user = $serializer->deserialize($request->getContent(), User::class, 'json');
 
@@ -72,6 +91,15 @@ class ClientController extends AbstractController
      */
     public function readUser(Client $client, User $user, UserRepository $repository)
     {
+        $this->securityService
+            ->setClientId($this->getUser()->getId())
+            ->setPathId($client->getId());
+
+        if (!$this->securityService->areClientIdsMatching())
+        {
+            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+        }
+
         $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
         if (is_null($data)) {
@@ -100,6 +128,15 @@ class ClientController extends AbstractController
      */
     public function readUsers(Client $client, Request $request, UserRepository $repository, PaginationService $paginationService)
     {
+        $this->securityService
+            ->setClientId($this->getUser()->getId())
+            ->setPathId($client->getId());
+
+        if (!$this->securityService->areClientIdsMatching())
+        {
+            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+        }
+
         $limit = 5;
         $page = $request->query->get('page');
         $maxPage = $paginationService->getPages($repository, $limit, ["client" => $client]);
@@ -127,6 +164,15 @@ class ClientController extends AbstractController
      */
     public function deleteUser(Client $client, User $user, UserRepository $repository, EntityManagerInterface $manager)
     {
+        $this->securityService
+            ->setClientId($this->getUser()->getId())
+            ->setPathId($client->getId());
+
+        if (!$this->securityService->areClientIdsMatching())
+        {
+            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+        }
+
         $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
         if (is_null($data)) {
