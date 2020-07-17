@@ -21,7 +21,7 @@ class SecurityService extends AbstractController
             [
                 'status' => 403,
                 'message' => 'Forbidden. The client ID indicated in the path is not your ID.',
-                'clientId' => 'Your client ID is ' . $this->clientId . '.'
+                'clientId' => $this->clientId
             ],
             403
         );
