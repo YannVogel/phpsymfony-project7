@@ -19,6 +19,29 @@
 
 `composer install`
 
+- Créer le dossier qui accueillera les clés pour JWT :
+
+`mkdir config/jwt`
+
+- Générer les clés pour JWT :
+
+```
+openssl genrsa -out config/jwt/private.pem -aes256 4096
+ 
+ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+```
+Une passphrase vous sera demandée. Choisissez et notez la bien.
+
+- Renseigner la passphrase dans le fichier .env :
+
+```
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=VOTRE_PASSPHRASE
+###< lexik/jwt-authentication-bundle ###
+```
+
 - Créer la base de données :
 
 `php bin/console doctrine:database:create`
@@ -37,8 +60,7 @@
 
 L'application est accessible à l'adresse https://127.0.0.1:8000/
 
-(Les clients en base de données ont tous comme mot de passe "password".)
-
+Vous pouvez vous connecter à l'adresse https://127.0.0.1:8000/login avec comme username client1@bilemo.com, client2@bilemo.com ou client3@bilemo.com et comme password "password".
 
 ----
 
@@ -63,6 +85,29 @@ L'application est accessible à l'adresse https://127.0.0.1:8000/
 
 `composer install`
 
+- Create the folder that will contain the keys for JWT :
+
+`mkdir config/jwt`
+
+- Generate the keys for JWT :
+
+```
+openssl genrsa -out config/jwt/private.pem -aes256 4096
+ 
+ openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+```
+You will be asked for a passphrase. Choose it and write it down.
+
+- Declare the passphrase in the .env file :
+
+```
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=YOUR_PASSPHRASE
+###< lexik/jwt-authentication-bundle ###
+```
+
 - Create the database :
 
 `php bin/console doctrine:database:create`
@@ -81,4 +126,4 @@ L'application est accessible à l'adresse https://127.0.0.1:8000/
 
 The application is accessible at https://127.0.0.1:8000/
 
-(The clients in the database all have the password "password".)
+You can log in at https://127.0.0.1:8000/login with the username client1@bilemo.com, client2@bilemo.com or client3@bilemo.com and the password "password".
