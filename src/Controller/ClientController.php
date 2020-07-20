@@ -51,7 +51,8 @@ class ClientController extends AbstractController
 
         if (!$this->securityService->areClientIdsMatching())
         {
-            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+            /* If IDs are not matching, return a 404 for security purpose. */
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         /* @var User $user */
@@ -60,13 +61,7 @@ class ClientController extends AbstractController
         $errors = $validator->validate($user);
 
         if (count($errors)) {
-            return $this->json(
-                [
-                    'status' => 400,
-                    'message' => 'Bad request. There are errors on given fields.'
-                ],
-                400
-            );
+            return $this->securityService->jsonToReturnIfBadRequest();
         }
 
         $user->setClient($client);
@@ -101,19 +96,14 @@ class ClientController extends AbstractController
 
         if (!$this->securityService->areClientIdsMatching())
         {
-            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+            /* If IDs are not matching, return a 404 for security purpose. */
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
         if (is_null($data)) {
-            return $this->json(
-                [
-                'status' => 404,
-                'message' => 'Resource not found.'
-                ],
-                404
-            );
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         return $this->json(
@@ -140,7 +130,8 @@ class ClientController extends AbstractController
 
         if (!$this->securityService->areClientIdsMatching())
         {
-            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+            /* If IDs are not matching, return a 404 for security purpose. */
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         $limit = 5;
@@ -178,19 +169,14 @@ class ClientController extends AbstractController
 
         if (!$this->securityService->areClientIdsMatching())
         {
-            return $this->securityService->jsonToResponseIfIdsAreNotMatching();
+            /* If IDs are not matching, return a 404 for security purpose. */
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
         if (is_null($data)) {
-            return $this->json(
-                [
-                    'status' => 404,
-                    'message' => 'Resource not found.'
-                ],
-                404
-            );
+            return $this->securityService->jsonToReturnIfNotFound();
         }
 
         $manager->remove($data);
