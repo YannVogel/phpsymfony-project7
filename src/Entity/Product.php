@@ -171,8 +171,6 @@ class Product
      */
     private Collection $colors;
 
-    private string $self;
-
     /**
      * @Groups({"detail", "list"})
      */
@@ -515,15 +513,22 @@ class Product
         return $this;
     }
 
-    public function getSelf(): string
+    public function getLinksMethods(): array
     {
-        return '/products/' . $this->getId();
+        return [
+            'self' => '/products/' . $this->getId()
+        ];
     }
 
     public function getLinks() : array
     {
-        return [
-            'self' => [ 'href' => $this->getSelf()]
-        ];
+        $links = [];
+        foreach ($this->getLinksMethods() as $action => $uri) {
+            $links = array_merge($links, [
+                $action => [ 'href' => $uri]
+            ]);
+        }
+
+        return $links;
     }
 }

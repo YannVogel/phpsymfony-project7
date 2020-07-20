@@ -94,9 +94,7 @@ class User
      */
     private string $mail;
 
-    private string $self;
-
-    private string $delete;
+    private array $linksMethods;
 
     /**
      * @Groups({"detail", "list"})
@@ -192,21 +190,23 @@ class User
         return $this;
     }
 
-    public function getSelf() : string
+    public function getLinksMethods() : array
     {
-        return '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId();
-    }
-
-    public function getDelete() : string
-    {
-        return '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId();
+        return [
+            'self' => '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId(),
+            'delete' => '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId(),
+        ];
     }
 
     public function getLinks() : array
     {
-        return [
-            'self' => [ 'href' => $this->getSelf()],
-            'delete' => [ 'href' => $this->getDelete()]
-        ];
-    }
+        $links = [];
+        foreach ($this->getLinksMethods() as $action => $uri) {
+            $links = array_merge($links, [
+                    $action => [ 'href' => $uri]
+            ]);
+        }
+
+        return $links;
+   }
 }
