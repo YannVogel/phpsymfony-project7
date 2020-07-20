@@ -94,15 +94,14 @@ class User
      */
     private string $mail;
 
-    /**
-     * @Groups({"list"})
-     */
-    private string $_self;
+    private string $self;
+
+    private string $delete;
 
     /**
      * @Groups({"detail", "list"})
      */
-    private string $_delete;
+    private string $_links;
 
     public function getId(): ?int
     {
@@ -201,5 +200,13 @@ class User
     public function getDelete() : string
     {
         return '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId();
+    }
+
+    public function getLinks() : array
+    {
+        return [
+            'self' => [ 'href' => $this->getSelf()],
+            'delete' => [ 'href' => $this->getDelete()]
+        ];
     }
 }
