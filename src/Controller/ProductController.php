@@ -21,6 +21,8 @@ use Symfony\Component\Serializer\SerializerInterface;
 class ProductController extends AbstractController
 {
     /**
+     * Allow a client to view the details of a particular product.
+     *
      * @Route("/{id}", name="product_detail", methods={"GET"})
      * @param Product $product
      * @param ProductRepository $repository
@@ -35,6 +37,8 @@ class ProductController extends AbstractController
     }
 
     /**
+     * Allow a client to view the list of all the registered products.
+     *
      * @Route("/{page<\d+>?1}", name="products_list", methods={"GET"})
      * @param Request $request
      * @param ProductRepository $repository
