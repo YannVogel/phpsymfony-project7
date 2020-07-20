@@ -33,6 +33,8 @@ class ClientController extends AbstractController
     }
 
     /**
+     * Allow a client to create a new user related to his client ID
+     *
      * @Route("/{id}/users", name="client_user_create", methods={"POST"})
      * @param Client $client
      * @param SerializerInterface $serializer
@@ -82,6 +84,8 @@ class ClientController extends AbstractController
     }
 
     /**
+     * Allow a client to view the details of a particular user.
+     *
      * @Route("/{id}/users/{user_id}", name="client_user_detail", methods={"GET"})
      * @Entity("user", expr="repository.find(user_id)")
      * @param Client $client
@@ -119,6 +123,8 @@ class ClientController extends AbstractController
     }
 
     /**
+     * Allow a client to view the list of all the registered users related to his client ID.
+     *
      * @Route("/{id}/users/{page<\d+>?1}", name="client_users_list", methods={"GET"})
      * @param Client $client
      * @param Request $request
@@ -154,6 +160,8 @@ class ClientController extends AbstractController
     }
 
     /**
+     * Allow a client to delete a particular user related to his client ID.
+     *
      * @Route("/{id}/users/{user_id}", name="client_user_delete", methods={"DELETE"})
      * @Entity("user", expr="repository.find(user_id)")
      * @param Client $client
