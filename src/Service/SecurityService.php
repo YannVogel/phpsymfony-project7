@@ -12,18 +12,28 @@ class SecurityService extends AbstractController
 
     public function areClientIdsMatching() : bool
     {
-        return $this->clientId !== $this->pathId ? false : true;
+        return $this->clientId === $this->pathId;
     }
 
-    public function jsonToResponseIfIdsAreNotMatching() : JsonResponse
+    public function jsonToReturnIfBadRequest() : JsonResponse
     {
         return $this->json(
             [
-                'status' => 403,
-                'message' => 'Forbidden. The client ID indicated in the path is not your ID.',
-                'clientId' => $this->clientId
+                'status' => 400,
+                'message' => 'Bad request. There are errors on given fields.'
             ],
-            403
+            400
+        );
+    }
+
+    public function jsonToReturnIfNotFound() : JsonResponse
+    {
+        return $this->json(
+            [
+                'status' => 404,
+                'message' => 'Resource not found.'
+            ],
+            404
         );
     }
 
@@ -62,6 +72,4 @@ class SecurityService extends AbstractController
         $this->pathId = $pathId;
         return $this;
     }
-
-
 }
