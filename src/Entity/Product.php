@@ -171,6 +171,11 @@ class Product
      */
     private Collection $colors;
 
+    /**
+     * @Groups({"list"})
+     */
+    private string $_self;
+
     public function __construct()
     {
         $this->wirelessTechnology = new ArrayCollection();
@@ -506,5 +511,10 @@ class Product
         $this->ram = $ram;
 
         return $this;
+    }
+
+    public function getSelf(): string
+    {
+        return '/products/' . $this->getId();
     }
 }

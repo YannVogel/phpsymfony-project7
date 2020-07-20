@@ -94,6 +94,16 @@ class User
      */
     private string $mail;
 
+    /**
+     * @Groups({"list"})
+     */
+    private string $_self;
+
+    /**
+     * @Groups({"detail", "list"})
+     */
+    private string $_delete;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -181,5 +191,15 @@ class User
         $this->mail = $mail;
 
         return $this;
+    }
+
+    public function getSelf() : string
+    {
+        return '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId();
+    }
+
+    public function getDelete() : string
+    {
+        return '/clients/' . $this->getClient()->getId() . '/users/' . $this->getId();
     }
 }
