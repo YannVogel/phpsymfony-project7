@@ -171,10 +171,12 @@ class Product
      */
     private Collection $colors;
 
+    private string $self;
+
     /**
-     * @Groups({"list"})
+     * @Groups({"detail", "list"})
      */
-    private string $_self;
+    private string $_links;
 
     public function __construct()
     {
@@ -516,5 +518,12 @@ class Product
     public function getSelf(): string
     {
         return '/products/' . $this->getId();
+    }
+
+    public function getLinks() : array
+    {
+        return [
+            'self' => [ 'href' => $this->getSelf()]
+        ];
     }
 }
