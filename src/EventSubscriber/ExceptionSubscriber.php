@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExceptionSubscriber implements EventSubscriberInterface
@@ -25,6 +26,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
             $data = [
                 'status' => $exception->getStatusCode(),
                 'message' => 'Bad request. There are errors on given fields.'
+            ];
+        }else if ($exception instanceof MethodNotAllowedHttpException) {
+            $data = [
+                'status' => $exception->getStatusCode(),
+                'message' => 'Method not allowed.'
             ];
         } else if($exception instanceof HttpException) {
             $data = [
