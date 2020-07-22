@@ -105,68 +105,68 @@ class Product
     private int $ram;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Battery::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Battery::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?Battery $battery;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Brand::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?Brand $brand;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Os::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Os::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?Os $os;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ScreenResolution::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=ScreenResolution::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?ScreenResolution $screenResolution;
 
     /**
-     * @ORM\ManyToOne(targetEntity=ScreenTechnology::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=ScreenTechnology::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?ScreenTechnology $screenTechnology;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SimSize::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=SimSize::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail"})
      */
     private ?SimSize $simSize;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products")
+     * @ORM\ManyToOne(targetEntity=Storage::class, inversedBy="products", fetch="EAGER")
      * @ORM\JoinColumn(nullable=false)
      * @Groups({"detail", "list"})
      */
     private ?Storage $storage;
 
     /**
-     * @ORM\ManyToMany(targetEntity=WirelessTechnology::class, inversedBy="products")
+     * @ORM\ManyToMany(targetEntity=WirelessTechnology::class, inversedBy="products", fetch="EAGER")
      * @Groups({"detail"})
      */
     private Collection $wirelessTechnology;
 
     /**
-     * @ORM\OneToMany(targetEntity=Illustration::class, mappedBy="product", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity=Illustration::class, mappedBy="product", orphanRemoval=true, fetch="EAGER")
      * @Groups({"detail", "list"})
      */
     private Collection $illustrations;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Color::class, mappedBy="product")
+     * @ORM\ManyToMany(targetEntity=Color::class, mappedBy="product", fetch="EAGER")
      * @Groups({"detail"})
      */
     private Collection $colors;
