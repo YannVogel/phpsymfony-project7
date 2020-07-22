@@ -9,6 +9,7 @@ use App\Repository\UserRepository;
 use App\Service\PaginationService;
 use App\Service\SecurityService;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Cache\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,6 +19,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @Route("/clients")
@@ -26,6 +28,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ClientController extends AbstractController
 {
     private SecurityService $securityService;
+    private int $limit = 5;
 
     public function __construct(SecurityService $securityService)
     {
@@ -41,9 +44,13 @@ class ClientController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $manager
      * @param ValidatorInterface $validator
+     * @param PaginationService $paginationService
+     * @param UserRepository $repository
+     * @param CacheInterface $cache
      * @return JsonResponse
+     * @throws InvalidArgumentException
      */
-    public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator)
+    public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator, PaginationService $paginationService, UserRepository $repository, CacheInterface $cache)
     {
         $this->securityService
             ->setClientId($this->getUser()->getId())
@@ -64,9 +71,15 @@ class ClientController extends AbstractController
             return $this->securityService->jsonToReturnIfBadRequest();
         }
 
+        $maxPageBeforeFlush = $paginationService->getPages($repository, $this->limit, ["client" => $client]);
+
         $user->setClient($client);
         $manager->persist($user);
         $manager->flush();
+
+        if ($maxPageBeforeFlush === $paginationService->getPages($repository, $this->limit, ["client" => $client])) {
+            $cache->delete('listOfAllUsersForTheClient' . $client->getId() . 'Page' . $maxPageBeforeFlush);
+        }
 
         return $this->json(
             [
@@ -86,9 +99,11 @@ class ClientController extends AbstractController
      * @param Client $client
      * @param User $user
      * @param UserRepository $repository
+     * @param CacheInterface $cache
      * @return JsonResponse
+     * @throws InvalidArgumentException
      */
-    public function readUser(Client $client, User $user, UserRepository $repository)
+    public function readUser(Client $client, User $user, UserRepository $repository, CacheInterface $cache)
     {
         $this->securityService
             ->setClientId($this->getUser()->getId())
@@ -100,7 +115,9 @@ class ClientController extends AbstractController
             return $this->securityService->jsonToReturnIfNotFound();
         }
 
-        $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
+        $data = $cache->get('detailOfTheUser' . $user->getId() . 'forTheClient' . $client->getId(), function() use ($user, $client, $repository) {
+            return $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
+        });
 
         if (is_null($data)) {
             return $this->securityService->jsonToReturnIfNotFound();
@@ -120,9 +137,11 @@ class ClientController extends AbstractController
      * @param Request $request
      * @param UserRepository $repository
      * @param PaginationService $paginationService
+     * @param CacheInterface $cache
      * @return JsonResponse|RedirectResponse
+     * @throws InvalidArgumentException
      */
-    public function readUsers(Client $client, Request $request, UserRepository $repository, PaginationService $paginationService)
+    public function readUsers(Client $client, Request $request, UserRepository $repository, PaginationService $paginationService, CacheInterface $cache)
     {
         $this->securityService
             ->setClientId($this->getUser()->getId())
@@ -134,9 +153,8 @@ class ClientController extends AbstractController
             return $this->securityService->jsonToReturnIfNotFound();
         }
 
-        $limit = 5;
         $page = $request->query->get('page');
-        $maxPage = $paginationService->getPages($repository, $limit, ["client" => $client]);
+        $maxPage = $paginationService->getPages($repository, $this->limit, ["client" => $client]);
 
         if (is_null($page) || $page < 1) {
             $page = 1;
@@ -144,8 +162,12 @@ class ClientController extends AbstractController
             return $this->redirectToRoute('client_users_list', ['id' => $client->getId(),'page' => 1], 302);
         }
 
+        $data = $cache->get('listOfAllUsersForTheClient' . $client->getId() . 'Page' . $page, function() use ($client, $page, $repository, $paginationService) {
+            return $paginationService->paginateResults($repository, $page, $this->limit, ["client" => $client]);
+        });
+
         return $this->json(
-            $paginationService->paginateResults($repository, $page, $limit, ["client" => $client]),
+            $data,
             200, [],
             ['groups' => 'list']);
     }
@@ -160,8 +182,9 @@ class ClientController extends AbstractController
      * @param UserRepository $repository
      * @param EntityManagerInterface $manager
      * @return JsonResponse
+     * @throws InvalidArgumentException
      */
-    public function deleteUser(Client $client, User $user, UserRepository $repository, EntityManagerInterface $manager)
+    public function deleteUser(Client $client, User $user, UserRepository $repository, EntityManagerInterface $manager, PaginationService $paginationService, CacheInterface $cache)
     {
         $this->securityService
             ->setClientId($this->getUser()->getId())
@@ -179,8 +202,14 @@ class ClientController extends AbstractController
             return $this->securityService->jsonToReturnIfNotFound();
         }
 
+        $maxPage = $paginationService->getPages($repository, $this->limit, ["client" => $client]);
+
         $manager->remove($data);
         $manager->flush();
+
+        for ($i = 1; $i <= $maxPage; $i++) {
+            $cache->delete('listOfAllUsersForTheClient' . $client->getId() . 'Page' . $i);
+        }
 
         return $this->json(
             [
