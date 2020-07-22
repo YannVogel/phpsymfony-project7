@@ -5,14 +5,14 @@ namespace App\Controller;
 use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\PaginationService;
-use Doctrine\Persistence\ObjectManager;
+use Psr\Cache\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * @Route("/products")
@@ -20,15 +20,16 @@ use Symfony\Component\Serializer\SerializerInterface;
  */
 class ProductController extends AbstractController
 {
+    private int $limit = 10;
+
     /**
      * Allow a client to view the details of a particular product.
      *
      * @Route("/{id}", name="product_detail", methods={"GET"})
      * @param Product $product
-     * @param ProductRepository $repository
      * @return JsonResponse
      */
-    public function readProduct(Product $product, ProductRepository $repository)
+    public function readProduct(Product $product)
     {
         return $this->json(
             $product,
@@ -43,13 +44,14 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param ProductRepository $repository
      * @param PaginationService $paginationService
+     * @param CacheInterface $cache
      * @return Response
+     * @throws InvalidArgumentException
      */
-    public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService)
+    public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService, CacheInterface $cache)
     {
-        $limit = 10;
         $page = $request->query->get('page');
-        $maxPage = $paginationService->getPages($repository, $limit);
+        $maxPage = $paginationService->getPages($repository, $this->limit);
 
         if (is_null($page) || $page < 1) {
             $page = 1;
@@ -58,7 +60,7 @@ class ProductController extends AbstractController
         }
 
         return $this->json(
-            $paginationService->paginateResults($repository, $page, $limit),
+            $paginationService->paginateResults($repository, $page, $this->limit),
             200, [],
             ['groups' => 'list']);
     }
