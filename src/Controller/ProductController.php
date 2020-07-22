@@ -27,12 +27,18 @@ class ProductController extends AbstractController
      *
      * @Route("/{id}", name="product_detail", methods={"GET"})
      * @param Product $product
+     * @param CacheInterface $cache
      * @return JsonResponse
+     * @throws InvalidArgumentException
      */
-    public function readProduct(Product $product)
+    public function readProduct(Product $product, CacheInterface $cache)
     {
+        $data = $cache->get('product' . $product->getId(), function () use ($product) {
+            return $product;
+        });
+
         return $this->json(
-            $product,
+            $data,
             200, [],
             ['groups' => 'detail']);
     }
@@ -46,6 +52,7 @@ class ProductController extends AbstractController
      * @param PaginationService $paginationService
      * @param CacheInterface $cache
      * @return Response
+     * @throws InvalidArgumentException
      */
     public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService, CacheInterface $cache)
     {
@@ -58,8 +65,12 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('products_list', ['page' => 1], 302);
         }
 
+        $data = $cache->get('listOfAllProductsPage' . $page, function() use ($page, $repository, $paginationService) {
+            return $paginationService->paginateResults($repository, $page, $this->limit);
+        });
+
         return $this->json(
-            $paginationService->paginateResults($repository, $page, $this->limit),
+            $data,
             200, [],
             ['groups' => 'list']);
     }
