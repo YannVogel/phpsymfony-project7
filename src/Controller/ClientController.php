@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Entity\User;
-use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\PaginationService;
 use App\Service\SecurityService;
