@@ -46,7 +46,6 @@ class ProductController extends AbstractController
      * @param PaginationService $paginationService
      * @param CacheInterface $cache
      * @return Response
-     * @throws InvalidArgumentException
      */
     public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService, CacheInterface $cache)
     {
