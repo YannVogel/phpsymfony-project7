@@ -10,8 +10,8 @@ class AuthenticationSuccessListener
     {
         $event->setData([
             'authentication' => 'success',
-            'payload' => $event->getData(),
-            'clientId' => $event->getUser()->getId()
+            'clientId' => $event->getUser()->getId(),
+            'payload' => $event->getData()
         ]);
     }
 }
