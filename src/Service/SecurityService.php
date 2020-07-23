@@ -10,12 +10,12 @@ class SecurityService extends AbstractController
     private int $clientId;
     private int $pathId;
 
-    public function areClientIdsMatching() : bool
+    public function areClientIdsMatching(): bool
     {
         return $this->clientId === $this->pathId;
     }
 
-    public function jsonToReturnIfBadRequest() : JsonResponse
+    public function jsonToReturnIfBadRequest(): JsonResponse
     {
         return $this->json(
             [
@@ -26,7 +26,7 @@ class SecurityService extends AbstractController
         );
     }
 
-    public function jsonToReturnIfNotFound() : JsonResponse
+    public function jsonToReturnIfNotFound(): JsonResponse
     {
         return $this->json(
             [
@@ -34,6 +34,29 @@ class SecurityService extends AbstractController
                 'message' => 'Resource not found.'
             ],
             404
+        );
+    }
+
+    public function jsonToReturnIfUserCreated(int $clientId, int $userId): JsonResponse
+    {
+        return $this->json(
+            [
+                'status' => 201,
+                'message' => 'Resource created successfully.',
+                'uri' => '/clients/' . $clientId . '/users/' . $userId
+            ],
+            201
+        );
+    }
+
+    public function jsonToReturnIfResourceDeleted(): JsonResponse
+    {
+        return $this->json(
+            [
+                'status' => 200,
+                'message' => 'Resource deleted successfully.'
+            ],
+            200
         );
     }
 
