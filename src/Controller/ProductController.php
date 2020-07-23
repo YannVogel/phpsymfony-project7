@@ -20,25 +20,29 @@ use Symfony\Contracts\Cache\CacheInterface;
  */
 class ProductController extends AbstractController
 {
+    private CacheInterface $cache;
     private int $limit = 10;
+
+    public function __construct(CacheInterface $cache)
+    {
+        $this->cache = $cache;
+    }
 
     /**
      * Allow a client to view the details of a particular product.
      *
      * @Route("/{id}", name="product_detail", methods={"GET"})
      * @param Product $product
-     * @param CacheInterface $cache
      * @return JsonResponse
      * @throws InvalidArgumentException
      */
-    public function readProduct(Product $product, CacheInterface $cache)
+    public function readProduct(Product $product)
     {
-        $data = $cache->get('product' . $product->getId(), function () use ($product) {
-            return $product;
-        });
-
         return $this->json(
-            $data,
+            $this->cache->get('product' . $product->getId(),
+                function () use ($product) {
+                    return $product;
+            }),
             200, [],
             ['groups' => 'detail']);
     }
@@ -50,27 +54,21 @@ class ProductController extends AbstractController
      * @param Request $request
      * @param ProductRepository $repository
      * @param PaginationService $paginationService
-     * @param CacheInterface $cache
      * @return Response
      * @throws InvalidArgumentException
      */
-    public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService, CacheInterface $cache)
+    public function readProducts(Request $request, ProductRepository $repository, PaginationService $paginationService)
     {
         $page = $request->query->get('page');
         $maxPage = $paginationService->getPages($repository, $this->limit);
 
-        if (is_null($page) || $page < 1) {
-            $page = 1;
-        } else if ($page > $maxPage) {
-            return $this->redirectToRoute('products_list', ['page' => 1], 302);
-        }
-
-        $data = $cache->get('listOfAllProductsPage' . $page, function() use ($page, $repository, $paginationService) {
-            return $paginationService->paginateResults($repository, $page, $this->limit);
-        });
+        $page = $paginationService->checkPageValue($page, $maxPage);
 
         return $this->json(
-            $data,
+            $this->cache->get('listOfAllProductsPage' . $page,
+                function() use ($page, $repository, $paginationService) {
+                    return $paginationService->paginateResults($repository, $page, $this->limit);
+            }),
             200, [],
             ['groups' => 'list']);
     }
