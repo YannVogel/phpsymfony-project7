@@ -8,6 +8,7 @@ api_login_check:
 gesdinet_jwt_refresh_token:
   path:       /refresh
   controller: gesdinet.jwtrefreshtoken::refresh
+  methods: POST
 
 app.swagger_ui:
   path: /doc
