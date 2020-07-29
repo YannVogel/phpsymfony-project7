@@ -1,0 +1,9 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: BileMo App
+            description: A B2B API about mobile phones.
+            version: 1.0.0
+    areas:
+        path_patterns: # an array of regexps
+            - ^/(?!_|doc)

@@ -27,6 +27,10 @@ security:
             stateless: true
             anonymous: true
 
+        api_doc:
+            pattern: ^/doc
+            security: false
+
         api:
             pattern: ^/
             stateless: true

@@ -58,9 +58,7 @@ JWT_PASSPHRASE=VOTRE_PASSPHRASE
 
 `symfony server:start`
 
-L'application est accessible à l'adresse https://127.0.0.1:8000/
-
-Vous pouvez vous connecter à l'adresse https://127.0.0.1:8000/login avec comme username client1@bilemo.com, client2@bilemo.com ou client3@bilemo.com et comme password "password".
+La documentation est accessible à l'adresse https://127.0.0.1:8000/doc
 
 ----
 
@@ -124,6 +122,4 @@ JWT_PASSPHRASE=YOUR_PASSPHRASE
 
 `symfony server:start`
 
-The application is accessible at https://127.0.0.1:8000/
-
-You can log in at https://127.0.0.1:8000/login with the username client1@bilemo.com, client2@bilemo.com or client3@bilemo.com and the password "password".
+The documentation is accessible at https://127.0.0.1:8000/doc

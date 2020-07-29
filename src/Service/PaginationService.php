@@ -18,4 +18,9 @@ class PaginationService
     {
         return ceil(count($repository->findBy($criteria)) / $limit);
     }
+
+    public function checkPageValue(?int $page, int $maxPage) : int
+    {
+        return is_null($page) || $page < 1 || $page > $maxPage ? 1 : $page;
+    }
 }
