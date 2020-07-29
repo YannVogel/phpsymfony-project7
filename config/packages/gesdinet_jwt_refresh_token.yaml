@@ -1,7 +1,6 @@
 gesdinet_jwt_refresh_token:
   ttl: 86400 # Refresh Token TTL of 24 hours
   user_identity_field: mail
-  ttl_update: true # Expand Refresh Token TTL on refresh
   token_parameter_name: refreshToken
   user_provider: security.user.provider.concrete.users_in_database
   single_use: true # A new refresh token will be provided if the refresh token is consumed
