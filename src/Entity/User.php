@@ -62,7 +62,7 @@ class User
      * @Assert\NotBlank(
      *     normalizer="trim",
      *     message="Age should not be blank.")
-     * @Assert\Regex("/\d/", message="Age must be an integer.")
+     * @Assert\Regex("/^\d+$/", message="Age must be an integer.")
      */
     private int $age;
 
