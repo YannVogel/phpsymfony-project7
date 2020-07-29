@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Entity;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Swagger\Annotations as SWG;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -24,6 +25,20 @@ use Symfony\Contracts\Cache\CacheInterface;
 /**
  * @Route("/clients")
  * @IsGranted("ROLE_USER")
+ *
+ * @SWG\Parameter(
+ *     name="Authorization",
+ *     in="header",
+ *     required=true,
+ *     type="string",
+ *     default="Bearer Token",
+ *     description="Bearer Token"
+ * )
+ *
+ * @SWG\Response(
+ *     response="401",
+ *     description="The client is not authenticated."
+ * )
  */
 class ClientController extends AbstractController
 {
@@ -51,6 +66,96 @@ class ClientController extends AbstractController
      * @param UserRepository $repository
      * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @SWG\Parameter(
+     *     name="id",
+     *     in="path",
+     *     type="integer",
+     *     description="The id of the client."
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="civility",
+     *     in="body",
+     *     required=true,
+     *     type="string",
+     *     description="The civility of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^m|f$",
+     *     example={"civility" : "m"}
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="firstName",
+     *     in="body",
+     *     required=true,
+     *     type="string",
+     *     description="The first name of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^[a-zA-Z -éèàç]+$",
+     *     example={"firstName" : "Martin"}
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="lastName",
+     *     in="body",
+     *     required=true,
+     *     type="string",
+     *     description="The last name of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^[a-zA-Z -éèàç]+$",
+     *     example={"lastName" : "Dupont"}
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="age",
+     *     in="body",
+     *     required=true,
+     *     type="integer",
+     *     description="The age of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^\d+$",
+     *     example={"age" : 37}
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="city",
+     *     in="body",
+     *     required=true,
+     *     type="string",
+     *     description="The city of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^[a-zA-Z -éèàç']+$",
+     *     example={"city" : "Paris"}
+     *     )
+     * )
+     *
+     * @SWG\Parameter(
+     *     name="mail",
+     *     in="body",
+     *     required=true,
+     *     type="string",
+     *     description="The mail of the user.",
+     *     @SWG\Schema(
+     *     type="string",
+     *     pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$",
+     *     example={"mail" : "user@mail.com"}
+     *     )
+     * )
+     *
+     * @SWG\Response(
+     *     response="201",
+     *     description="User created."
+     * )
      */
     public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator, UserRepository $repository)
     {
