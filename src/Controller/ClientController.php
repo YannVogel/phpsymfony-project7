@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Client;
 use App\Entity\User;
-use App\Repository\ClientRepository;
 use App\Repository\UserRepository;
 use App\Service\PaginationService;
 use App\Service\SecurityService;
@@ -27,6 +26,13 @@ use Symfony\Contracts\Cache\CacheInterface;
  * @IsGranted("ROLE_USER")
  *
  * @SWG\Parameter(
+ *     name="id",
+ *     in="path",
+ *     type="integer",
+ *     description="The id of the client."
+ * )
+ *
+ * @SWG\Parameter(
  *     name="Authorization",
  *     in="header",
  *     required=true,
@@ -38,6 +44,11 @@ use Symfony\Contracts\Cache\CacheInterface;
  * @SWG\Response(
  *     response="401",
  *     description="The client is not authenticated."
+ * )
+ *
+ * @SWG\Response(
+ *     response="405",
+ *     description="HTTP method not allowed."
  * )
  */
 class ClientController extends AbstractController
@@ -66,13 +77,6 @@ class ClientController extends AbstractController
      * @param UserRepository $repository
      * @return JsonResponse
      * @throws InvalidArgumentException
-     *
-     * @SWG\Parameter(
-     *     name="id",
-     *     in="path",
-     *     type="integer",
-     *     description="The id of the client."
-     * )
      *
      * @SWG\Parameter(
      *     name="civility",
@@ -156,6 +160,16 @@ class ClientController extends AbstractController
      *     response="201",
      *     description="User created."
      * )
+     *
+     * @SWG\Response(
+     *     response="400",
+     *     description="There are errors on given fields."
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="The id provided is not the client's id."
+     * )
      */
     public function createUser(Client $client, SerializerInterface $serializer, Request $request, EntityManagerInterface $manager, ValidatorInterface $validator, UserRepository $repository)
     {
@@ -192,6 +206,60 @@ class ClientController extends AbstractController
     }
 
     /**
+     * Allow a client to view the list of all the registered users related to his client ID.
+     *
+     * @Route("/{id}/users", name="client_users_list", methods={"GET"})
+     * @param Client $client
+     * @param Request $request
+     * @param UserRepository $repository
+     * @return JsonResponse|RedirectResponse
+     * @throws InvalidArgumentException
+     *
+     * @SWG\Parameter(
+     *     name="page",
+     *     in="query",
+     *     type="integer",
+     *     description="A specific page of the users' list.",
+     *     default=1
+     * )
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns the (paginated) user's list belonging to the client."
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="The id provided is not the client's id."
+     * )
+     */
+    public function readUsers(Client $client, Request $request, UserRepository $repository)
+    {
+        $this->securityService
+            ->setClientId($this->getUser()->getId())
+            ->setPathId($client->getId());
+
+        if (!$this->securityService->areClientIdsMatching())
+        {
+            /* If IDs are not matching, return a 404 for security purpose. */
+            return $this->securityService->jsonToReturnIfNotFound();
+        }
+
+        $page = $request->query->get('page');
+        $maxPage = $this->paginationService->getPages($repository, $this->limit, ["client" => $client]);
+
+        $page = $this->paginationService->checkPageValue($page, $maxPage);
+
+        return $this->json(
+            $this->cache->get('listOfAllUsersForTheClient' . $client->getId() . 'Page' . $page,
+                function() use ($client, $page, $repository) {
+                    return $this->paginationService->paginateResults($repository, $page, $this->limit, ["client" => $client]);
+                }),
+            200, [],
+            ['groups' => 'list']);
+    }
+
+    /**
      * Allow a client to view the details of a particular user.
      *
      * @Route("/{id}/users/{user_id}", name="client_user_detail", methods={"GET"})
@@ -199,9 +267,25 @@ class ClientController extends AbstractController
      * @param Client $client
      * @param User $user
      * @param UserRepository $repository
-     * @param CacheInterface $cache
      * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @SWG\Parameter(
+     *     name="user_id",
+     *     in="path",
+     *     type="integer",
+     *     description="The id of the user."
+     * )
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="Returns the details of the user."
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="The id provided is not the client's id or the provided user_id is not associated to any user belonging to the client."
+     * )
      */
     public function readUser(Client $client, User $user, UserRepository $repository)
     {
@@ -231,42 +315,6 @@ class ClientController extends AbstractController
     }
 
     /**
-     * Allow a client to view the list of all the registered users related to his client ID.
-     *
-     * @Route("/{id}/users/{page<\d+>?1}", name="client_users_list", methods={"GET"})
-     * @param Client $client
-     * @param Request $request
-     * @param UserRepository $repository
-     * @return JsonResponse|RedirectResponse
-     * @throws InvalidArgumentException
-     */
-    public function readUsers(Client $client, Request $request, UserRepository $repository)
-    {
-        $this->securityService
-            ->setClientId($this->getUser()->getId())
-            ->setPathId($client->getId());
-
-        if (!$this->securityService->areClientIdsMatching())
-        {
-            /* If IDs are not matching, return a 404 for security purpose. */
-            return $this->securityService->jsonToReturnIfNotFound();
-        }
-
-        $page = $request->query->get('page');
-        $maxPage = $this->paginationService->getPages($repository, $this->limit, ["client" => $client]);
-
-        $page = $this->paginationService->checkPageValue($page, $maxPage);
-
-        return $this->json(
-            $this->cache->get('listOfAllUsersForTheClient' . $client->getId() . 'Page' . $page,
-                function() use ($client, $page, $repository) {
-                    return $this->paginationService->paginateResults($repository, $page, $this->limit, ["client" => $client]);
-                }),
-            200, [],
-            ['groups' => 'list']);
-    }
-
-    /**
      * Allow a client to delete a particular user related to his client ID.
      *
      * @Route("/{id}/users/{user_id}", name="client_user_delete", methods={"DELETE"})
@@ -277,6 +325,23 @@ class ClientController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return JsonResponse
      * @throws InvalidArgumentException
+     *
+     * @SWG\Parameter(
+     *     name="user_id",
+     *     in="path",
+     *     type="integer",
+     *     description="The id of the user."
+     * )
+     *
+     * @SWG\Response(
+     *     response="200",
+     *     description="User deleted successfully."
+     * )
+     *
+     * @SWG\Response(
+     *     response="404",
+     *     description="The id provided is not the client's id or the provided user_id is not associated to any user belonging to the client."
+     * )
      */
     public function deleteUser(Client $client, User $user, UserRepository $repository, EntityManagerInterface $manager)
     {
