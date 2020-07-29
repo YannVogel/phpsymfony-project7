@@ -18,7 +18,7 @@ class SecurityController extends AbstractController
      *     in="body",
      *     required=true,
      *     type="string",
-     *     description="The mail of the client",
+     *     description="The mail of the client.",
      *     @SWG\Schema(
      *     type="string",
      *     pattern="^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$",
@@ -31,7 +31,7 @@ class SecurityController extends AbstractController
      *     in="body",
      *     required=true,
      *     type="string",
-     *     description="The password of the client",
+     *     description="The password of the client.",
      *     @SWG\Schema(
      *     type="string",
      *     example={"password" : "clientpassword"}
