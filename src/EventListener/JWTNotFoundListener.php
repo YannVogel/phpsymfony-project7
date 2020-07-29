@@ -10,9 +10,9 @@ class JWTNotFoundListener
     public function onJWTNotFound(JWTNotFoundEvent $event)
     {
         $event->setResponse(new JsonResponse([
-            'status'  => 403,
+            'status'  => 401,
             'message' => 'Missing credentials.',
-            ], 403)
+            ], 401)
         );
     }
 }
