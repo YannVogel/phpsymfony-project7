@@ -32,6 +32,11 @@ use Symfony\Contracts\Cache\CacheInterface;
  *     response="401",
  *     description="The client is not authenticated."
  * )
+ *
+ * @SWG\Response(
+ *     response="405",
+ *     description="HTTP method not allowed."
+ * )
  */
 class ProductController extends AbstractController
 {
@@ -57,7 +62,8 @@ class ProductController extends AbstractController
      *     name="page",
      *     in="query",
      *     type="integer",
-     *     description="A specific page of the products' list."
+     *     description="A specific page of the products' list.",
+     *     default=1
      * )
      *
      * @SWG\Response(
