@@ -4,6 +4,8 @@
 
 # Créer un web service exposant une API - Un projet OpenClassrooms par Yann Vogel
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b5d18b8cfb264ea59fc6e74fb372e456)](https://app.codacy.com/manual/Flawxy/phpsymfony-project7?utm_source=github.com&utm_medium=referral&utm_content=Flawxy/phpsymfony-project7&utm_campaign=Badge_Grade_Dashboard)
+
 ## Instructions d'installation
 
 -  Créer le dossier qui accueillera le projet.
