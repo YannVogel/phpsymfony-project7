@@ -21,6 +21,6 @@ class PaginationService
 
     public function checkPageValue(?int $page, int $maxPage) : int
     {
-        return is_null($page) || $page < 1 || $page > $maxPage ? 1 : $page;
+        return $page === null || $page < 1 || $page > $maxPage ? 1 : $page;
     }
 }
