@@ -1,5 +1,7 @@
 <img src="https://i.ibb.co/gyvZvxd/doc.png" alt="Screenshot-1" />
 
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/2bbeb09283a04056aacab52a0c3760cf)](https://www.codacy.com/manual/Flawxy/phpsymfony-project7?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Flawxy/phpsymfony-project7&amp;utm_campaign=Badge_Grade)
+
 <img src="https://i.ibb.co/r2sV4QT/FR-France-Flag-icon.png" alt="FR-France-Flag-icon"/>
 
 # Créer un web service exposant une API - Un projet OpenClassrooms par Yann Vogel
