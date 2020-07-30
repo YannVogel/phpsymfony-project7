@@ -15,7 +15,10 @@ class ExceptionSubscriber implements EventSubscriberInterface
     public function onKernelException(ExceptionEvent $event)
     {
         $exception = $event->getThrowable();
-        $data = [];
+        $data = [
+            'status' => 400,
+            'message' => 'Bad request.'
+        ];
 
         if ($exception instanceof NotFoundHttpException) {
             $data = [
@@ -36,11 +39,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
             $data = [
                 'status' => $exception->getStatusCode(),
                 'message' => 'Full authentication is required to access this resource.'
-            ];
-        } else {
-            $data = [
-                'status' => 400,
-                'message' => 'Bad request.'
             ];
         }
 
