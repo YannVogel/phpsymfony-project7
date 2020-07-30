@@ -357,7 +357,7 @@ class ClientController extends AbstractController
 
         $data = $repository->findOneBy(["client" => $client, "id" => $user->getId()]);
 
-        if (is_null($data)) {
+        if ($data === null) {
             return $this->securityService->jsonToReturnIfNotFound();
         }
 
