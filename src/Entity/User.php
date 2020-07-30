@@ -94,8 +94,6 @@ class User
      */
     private string $mail;
 
-    private array $linksMethods;
-
     /**
      * @Groups({"detail", "list"})
      */
