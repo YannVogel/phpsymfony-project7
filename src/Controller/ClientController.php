@@ -177,8 +177,7 @@ class ClientController extends AbstractController
             ->setClientId($this->getUser()->getId())
             ->setPathId($client->getId());
 
-        if (!$this->securityService->areClientIdsMatching())
-        {
+        if (!$this->securityService->areClientIdsMatching()) {
             /* If IDs are not matching, return a 404 for security purpose. */
             return $this->securityService->jsonToReturnIfNotFound();
         }
@@ -239,8 +238,7 @@ class ClientController extends AbstractController
             ->setClientId($this->getUser()->getId())
             ->setPathId($client->getId());
 
-        if (!$this->securityService->areClientIdsMatching())
-        {
+        if (!$this->securityService->areClientIdsMatching()) {
             /* If IDs are not matching, return a 404 for security purpose. */
             return $this->securityService->jsonToReturnIfNotFound();
         }
@@ -293,8 +291,7 @@ class ClientController extends AbstractController
             ->setClientId($this->getUser()->getId())
             ->setPathId($client->getId());
 
-        if (!$this->securityService->areClientIdsMatching())
-        {
+        if (!$this->securityService->areClientIdsMatching()) {
             /* If IDs are not matching, return a 404 for security purpose. */
             return $this->securityService->jsonToReturnIfNotFound();
         }
@@ -349,8 +346,7 @@ class ClientController extends AbstractController
             ->setClientId($this->getUser()->getId())
             ->setPathId($client->getId());
 
-        if (!$this->securityService->areClientIdsMatching())
-        {
+        if (!$this->securityService->areClientIdsMatching()) {
             /* If IDs are not matching, return a 404 for security purpose. */
             return $this->securityService->jsonToReturnIfNotFound();
         }
